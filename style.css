@@ -1,0 +1,43 @@
+.row {
+    display: inline-flex;
+}
+
+button {
+    padding: 10px 16px;
+    box-sizing: border-box;
+    width: 60px;
+    cursor: pointer;
+}
+
+.controls>:first-child>:nth-child(1){
+    color: blue;
+}
+
+.controls {
+    margin: auto;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.calculator {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    border: solid 2px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.screen {
+    background-color: lightgoldenrodyellow;
+    border: ridge 2px;
+    padding: 4px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
