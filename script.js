@@ -5,7 +5,8 @@ const digits = document.querySelectorAll('.digit');
 const operators = document.querySelectorAll('.operator');
 const controls = document.querySelectorAll('.control');
 
-let numbers = ['3','8']
+let numbers = ['',''];
+let operator = '';
 
 function display(number) {
     screen.querySelector('p').textContent = number;
@@ -14,6 +15,7 @@ function display(number) {
 digits.forEach(btn => {
     btn.addEventListener('click', (e) => {
         const digit = e.target.innerText;
+        console.log(digit);
         numbers[1] += digit;
         display(numbers[1]);
     });
@@ -21,20 +23,41 @@ digits.forEach(btn => {
 
 operators.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        const operator = e.target.dataset.operator;
-        operate(operator);
+        if (numbers[0] != '') {
+            //intermediary result
+            operate(operator);
+            display(numbers[1]);
+        }
+        numbers.reverse();
+        operator = e.target.dataset.operator;
     });
 });
 
 // Operate
 
-function operate(operator) {
-    switch (operator) {
-        case 'add': return display('homo');
-        case 'subtract': return display('hetero');
-        case 'multiply': return display('trans');
-        case 'divide': return display('queer');
+function operate(op) {
+    let result;
+    switch (op) {
+        case 'add': 
+        console.log('add operation started');
+        result = parseInt(numbers[0])+parseInt(numbers[1]);
+        break;
+        case 'subtract': 
+        console.log('subtract operation started');
+        result = parseInt(numbers[0])-parseInt(numbers[1]);
+        break;
+        case 'multiply': 
+        console.log('multiply operation started');
+        result = parseInt(numbers[0])*parseInt(numbers[1]);
+        break;
+        case 'divide':
+        console.log('divide operation started');
+        result = parseInt(numbers[0])/parseInt(numbers[1]);
+        break;
     }
+    result.toString()
+    // insert result number
+    numbers = ['', result];
 }
 /*
 
