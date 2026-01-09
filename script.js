@@ -3,61 +3,101 @@ const screen = document.querySelector('.screen')
 // Buttons
 const digits = document.querySelectorAll('.digit');
 const operators = document.querySelectorAll('.operator');
-const controls = document.querySelectorAll('.control');
 
-let numbers = ['',''];
+const clearButton = document.getElementById('clear');
+const equalButton = document.getElementById('equal');
+
+let num1 = '';
+let num2 = '';
 let operator = '';
+let didEqualOp = false;
 
-function display(number) {
-    screen.querySelector('p').textContent = number;
+// maybe make another variable to save last result?
+
+function display(str) {
+    screen.querySelector('p').textContent = str;
 }
 
 digits.forEach(btn => {
     btn.addEventListener('click', (e) => {
         const digit = e.target.innerText;
-        console.log(digit);
-        numbers[1] += digit;
-        display(numbers[1]);
+        if (didEqualOp == true) {
+            // start with num 1 if equals was pressed
+            num1 = '';
+            num1 += digit;
+            operator = ''; // reset operator
+            didEqualOp = false;
+        }
+        else if (operator == '') {
+            // append to num1 if no operator was set
+            num1 += digit;
+            display(num1);
+            console.log('first: '+num1);
+        }
+        else {
+            // append to num2
+            num2 += digit;
+            display(num2);
+            console.log('second: '+num2);
+        };
     });
 });
+
+// Operator
 
 operators.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        if (numbers[0] != '') {
-            //intermediary result
-            operate(operator);
-            display(numbers[1]);
-        }
-        numbers.reverse();
+        // if an operator was set already
+        // and num2 has been set
+        // evaluate previous
+        if (operator != '' && num2 != '') { evaluate() };
+        // initialize operator
         operator = e.target.dataset.operator;
+        console.log(operator);
+        if (didEqualOp) {didEqualOp = false};
     });
 });
 
-// Operate
+// Equals
 
-function operate(op) {
-    let result;
+equalButton.addEventListener('click', (e) => {
+    if (!didEqualOp) {
+    evaluate()
+    didEqualOp = true
+    };
+})
+
+// Clear
+
+clearButton.addEventListener('click', (e) => {
+        num1 = '';
+        num2 = '';
+        operator = '';
+        didEqualOp = false;
+        display('cleared');
+})
+
+// Evaluate a pair of numbers
+
+function operate(a, b, op) {
+    // convert strings to numbers 
+    a = parseInt(a);
+    b = parseInt(b);
     switch (op) {
-        case 'add': 
-        console.log('add operation started');
-        result = parseInt(numbers[0])+parseInt(numbers[1]);
-        break;
-        case 'subtract': 
-        console.log('subtract operation started');
-        result = parseInt(numbers[0])-parseInt(numbers[1]);
-        break;
-        case 'multiply': 
-        console.log('multiply operation started');
-        result = parseInt(numbers[0])*parseInt(numbers[1]);
-        break;
-        case 'divide':
-        console.log('divide operation started');
-        result = parseInt(numbers[0])/parseInt(numbers[1]);
-        break;
+        case '+': return (a+b);
+        case '-': return (a-b);
+        case '*': return (a*b);
+        case '/': return (a/b);
     }
-    result.toString()
-    // insert result number
-    numbers = ['', result];
+}
+
+function evaluate() {
+    let result = operate(num1, num2, operator);
+    display(result);
+    console.log('equals: '+result);
+    // pass result to num1 and reset num2
+    num1 = result;
+    num2 ='';
 }
 /*
 
